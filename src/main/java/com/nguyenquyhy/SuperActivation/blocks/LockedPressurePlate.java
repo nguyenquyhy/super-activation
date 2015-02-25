@@ -40,10 +40,8 @@ public class LockedPressurePlate extends BlockPressurePlate implements
 		if (world.isRemote) {
 			mc.thePlayer.openGui(SuperActivationMod.instance,
 					GUIs.LockedPressurePlate.ordinal(), world, x, y, z);
-			return false;
-		} else {
-			return false;
 		}
+		return true;	
 	};
 
 	@Override

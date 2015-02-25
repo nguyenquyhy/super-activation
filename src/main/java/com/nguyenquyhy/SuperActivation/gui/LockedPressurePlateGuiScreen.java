@@ -67,7 +67,8 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		this.ySize = 166;
 
 		tileEntity = (LockedActivatorTileEntity) world.getTileEntity(x, y, z);
-		if (tileEntity != null && tileEntity.itemUnlocalizedName != null && !tileEntity.itemUnlocalizedName.isEmpty()) {
+		if (tileEntity != null && tileEntity.itemUnlocalizedName != null
+				&& !tileEntity.itemUnlocalizedName.isEmpty()) {
 			this.itemUnlocalizedName = tileEntity.itemUnlocalizedName;
 			this.itemLocalizedName = languageRegistry
 					.getStringLocalization(this.itemUnlocalizedName + ".name");
@@ -107,8 +108,8 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			this.buttonList.add(lockButton);
 		} else {
 			// Locked
-			this.blockItemStack = new ItemStack(
-					Block.getBlockFromName(this.itemUnlocalizedName));
+			this.blockItemStack = ItemStackHelper
+					.getByUnlocalizedName(this.itemUnlocalizedName);
 		}
 	}
 
@@ -149,7 +150,8 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		case 1:
 			// Lock button is pressed
 			String unlocalizedName = this.blockItemStack.getUnlocalizedName();
-			SuperActivationMod.channel.sendToServer(new LockActivatorMessage(x, y, z, unlocalizedName));
+			SuperActivationMod.channel.sendToServer(new LockActivatorMessage(x,
+					y, z, unlocalizedName));
 			// world.markBlockForUpdate(x, y, z);
 			this.player.closeScreen();
 			break;
@@ -202,9 +204,6 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 					renderItem.renderItemIntoGUI(this.fontRendererObj,
 							mc.renderEngine, this.blockItemStack, posX + 120,
 							posY + 112);
-					renderItem.renderItemOverlayIntoGUI(this.fontRendererObj,
-							mc.renderEngine, this.blockItemStack, posX + 120,
-							posY + 112);
 				} catch (Exception ex) {
 
 				}
@@ -213,11 +212,21 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 						posX + 120, posY + 116, 0xFF0000);
 			}
 		} else {
-			this.drawString(this.fontRendererObj, "You must be holding a "
-					+ this.itemLocalizedName, posX + 15, posY + 40, 0xFFFFFF);
+			this.drawCenteredString(this.fontRendererObj,
+					"You must be holding a " + this.itemLocalizedName, posX
+							+ xSize / 2, posY + 60, 0xFFFFFF);
 
-			this.drawString(this.fontRendererObj, "to activate this!",
-					posX + 15, posY + 60, 0xFFFFFF);
+			this.drawCenteredString(this.fontRendererObj,
+					"to activate this plate!", posX + xSize / 2, posY + 80,
+					0xFFFFFF);
+
+			try {
+				renderItem.renderItemIntoGUI(this.fontRendererObj,
+						mc.renderEngine, this.blockItemStack, posX + xSize / 2
+								- 8, posY + 100);
+			} catch (Exception ex) {
+				System.out.println("Error");
+			}
 		}
 		// RenderHelper.enableStandardItemLighting();
 
