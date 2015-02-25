@@ -6,23 +6,32 @@ import java.util.List;
 import com.nguyenquyhy.SuperActivation.SuperActivationMod;
 import com.nguyenquyhy.SuperActivation.gui.GUIs;
 import com.nguyenquyhy.SuperActivation.gui.LockedPressurePlateGuiScreen;
+import com.nguyenquyhy.SuperActivation.tileentities.LockedActivatorTileEntity;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public class LockedPressurePlate extends BlockPressurePlate {
+public class LockedPressurePlate extends BlockPressurePlate implements
+		ITileEntityProvider {
 	public LockedPressurePlate(String icon, Material material,
 			BlockPressurePlate.Sensitivity sensitivity) {
 		super(icon, material, sensitivity);
+		setHardness(0.5F);
+		setStepSound(Block.soundTypePiston);
+		setCreativeTab(CreativeTabs.tabRedstone);
+		setBlockName("lockedPressurePlate");
 	}
 
 	@Override
@@ -31,7 +40,7 @@ public class LockedPressurePlate extends BlockPressurePlate {
 		if (world.isRemote) {
 			mc.thePlayer.openGui(SuperActivationMod.instance,
 					GUIs.LockedPressurePlate.ordinal(), world, x, y, z);
-			return true;
+			return false;
 		} else {
 			return false;
 		}
@@ -54,18 +63,16 @@ public class LockedPressurePlate extends BlockPressurePlate {
 						ItemStack currentStack = player.inventory
 								.getCurrentItem();
 						if (currentStack != null) {
-							Item item = currentStack.getItem();
-							if (item != null) {
-								String name = item.getUnlocalizedName();
-								if (name.equals("tile.grass")
-										|| name.equals("tile.dirt"))
-									return 15;
-							}
-						}
+							String unlocalizedName = currentStack
+									.getUnlocalizedName();
+							LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity) world
+									.getTileEntity(x, y, z);
 
-						// player.addChatMessage(new
-						// ChatComponentText("You have to carry a " + blockName
-						// + " to activate this!"));
+							if (tileEntity != null
+									&& unlocalizedName
+											.equals(tileEntity.itemUnlocalizedName))
+								return 15;
+						}
 					}
 				}
 			}
@@ -75,4 +82,14 @@ public class LockedPressurePlate extends BlockPressurePlate {
 	}
 
 	public static Minecraft mc = Minecraft.getMinecraft();
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new LockedActivatorTileEntity();
+	}
+
+	@Override
+	public boolean hasTileEntity(int metadata) {
+		return true;
+	}
 }
