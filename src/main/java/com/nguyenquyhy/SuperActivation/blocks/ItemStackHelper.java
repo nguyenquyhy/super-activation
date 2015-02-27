@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -41,7 +42,7 @@ public class ItemStackHelper {
 			cachedItems = new ArrayList<CachedItem>();
 			Minecraft mc = Minecraft.getMinecraft();
 			Set keys = Block.blockRegistry.getKeys();
-
+			
 			for (Object key : keys) {
 				if (key instanceof String) {
 					String stringId = (String) key;
@@ -100,6 +101,7 @@ public class ItemStackHelper {
 				}
 			}
 
+			// Partial match
 			for (CachedItem cachedItem : cachedItems) {
 				if (cachedItem.stringId.contains(input)
 						|| cachedItem.unlocalizedName.contains(input)
@@ -108,6 +110,8 @@ public class ItemStackHelper {
 					return cachedItem.itemStack;
 				}
 			}
+			
+			return GameRegistry.findItemStack("pixelmon", input, 1);
 		}
 		return null;
 	}

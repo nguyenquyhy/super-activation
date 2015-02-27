@@ -102,7 +102,13 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			this.blockTextField.setEnableBackgroundDrawing(true);
 			this.blockTextField.setFocused(true);
 
-			this.lockButton = new GuiButton(1, posX + 15, posY + 110, 100, 20,
+			GuiButton pickButton = new GuiButton(2, posX + 15, posY + 100, 100,
+					20, "Pick current");
+			// pickButton.enabled = this.player.inventory.getCurrentItem() !=
+			// null;
+			this.buttonList.add(pickButton);
+
+			this.lockButton = new GuiButton(1, posX + 15, posY + 130, 100, 20,
 					"Lock this plate");
 			this.lockButton.enabled = false;
 			this.buttonList.add(lockButton);
@@ -155,6 +161,18 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			// world.markBlockForUpdate(x, y, z);
 			this.player.closeScreen();
 			break;
+		case 2:
+			this.blockItemStack = this.player.inventory.getCurrentItem();
+			if (this.blockItemStack != null) {
+				this.blockTextField.setText(this.blockItemStack
+						.getDisplayName());
+				this.isShowingError = false;
+				this.lockButton.enabled = true;
+			} else {
+				this.isShowingError = true;
+				this.lockButton.enabled = false;
+			}
+			break;
 		default:
 
 		}
@@ -201,9 +219,11 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 					this.drawString(this.fontRendererObj,
 							this.itemLocalizedName, posX + 140, posY + 116,
 							0x00FF00);
+					RenderHelper.enableStandardItemLighting();
 					renderItem.renderItemIntoGUI(this.fontRendererObj,
 							mc.renderEngine, this.blockItemStack, posX + 120,
 							posY + 112);
+					RenderHelper.enableGUIStandardItemLighting();
 				} catch (Exception ex) {
 
 				}
