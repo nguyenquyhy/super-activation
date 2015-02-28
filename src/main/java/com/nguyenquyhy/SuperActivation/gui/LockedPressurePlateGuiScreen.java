@@ -28,7 +28,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class LockedPressurePlateGuiScreen extends GuiScreen {
-	private String itemUnlocalizedName;
+	private String itemDelegateName;
+	// private String itemUnlocalizedName;
 	private String itemLocalizedName;
 	private String localizedTitle;
 
@@ -67,17 +68,17 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		this.ySize = 166;
 
 		tileEntity = (LockedActivatorTileEntity) world.getTileEntity(x, y, z);
-		if (tileEntity != null && tileEntity.itemUnlocalizedName != null
-				&& !tileEntity.itemUnlocalizedName.isEmpty()) {
-			this.itemUnlocalizedName = tileEntity.itemUnlocalizedName;
-			this.itemLocalizedName = languageRegistry
-					.getStringLocalization(this.itemUnlocalizedName + ".name");
+		if (tileEntity != null && tileEntity.itemDelegateName != null
+				&& !tileEntity.itemDelegateName.isEmpty()) {
+			this.itemDelegateName = tileEntity.itemDelegateName;
+		} else {
+			this.itemDelegateName = null;
 		}
 	}
 
 	@Override
 	public void initGui() {
-		// ItemStackHelper.initialize();
+		ItemStackHelper.initialize();
 
 		int posX = (this.width - xSize) / 2;
 		int posY = (this.height - ySize) / 2;
@@ -92,30 +93,34 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		this.localizedTitle = languageRegistry
 				.getStringLocalization("tile.lockedPressurePlate.name");
 
-		if (this.itemUnlocalizedName == null) {
+		if (this.itemDelegateName == null) {
 			// Not locked yet
 			this.blockTextField = new GuiTextField(this.fontRendererObj,
-					posX + 15, posY + 80, 200, 20);
+					posX + 15, posY + 80, 150, 20);
 			this.blockTextField.setTextColor(-1);
 			this.blockTextField.setDisabledTextColour(0xAAAAAA);
 			this.blockTextField.setMaxStringLength(30);
 			this.blockTextField.setEnableBackgroundDrawing(true);
 			this.blockTextField.setFocused(true);
 
-			GuiButton pickButton = new GuiButton(2, posX + 15, posY + 100, 100,
+			GuiButton pickButton = new GuiButton(2, posX + 165, posY + 80, 70,
 					20, "Pick current");
 			// pickButton.enabled = this.player.inventory.getCurrentItem() !=
 			// null;
 			this.buttonList.add(pickButton);
 
-			this.lockButton = new GuiButton(1, posX + 15, posY + 130, 100, 20,
+			this.lockButton = new GuiButton(1, posX + 15, posY + 110, 100, 20,
 					"Lock this plate");
 			this.lockButton.enabled = false;
 			this.buttonList.add(lockButton);
 		} else {
 			// Locked
-			this.blockItemStack = ItemStackHelper
-					.getByUnlocalizedName(this.itemUnlocalizedName);
+			String[] tokens = this.itemDelegateName.split(":", 2);
+			Item item = GameRegistry.findItem(tokens[0], tokens[1]);
+			this.blockItemStack = new ItemStack(item);
+			this.itemLocalizedName = languageRegistry
+					.getStringLocalization(blockItemStack.getUnlocalizedName()
+							+ ".name");
 		}
 	}
 
@@ -126,24 +131,28 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 
 			String text = blockTextField.getText();
 
-			this.blockItemStack = ItemStackHelper.findItemStackByInput(text);
-
-			if (this.blockItemStack != null) {
-				this.itemLocalizedName = languageRegistry
-						.getStringLocalization(blockItemStack
-								.getUnlocalizedName() + ".name");
-				if (blockItemStack.hasDisplayName()) {
-					// Overwrite itemLocalizedName if displayName is provided
-					this.itemLocalizedName = blockItemStack.getDisplayName();
-				}
-				lockButton.enabled = true;
-				isShowingError = false;
-			} else {
-				lockButton.enabled = false;
-				isShowingError = true;
-			}
+			updateBlockItemStack(ItemStackHelper.findItemStackByInput(text));
 		}
 		super.keyTyped(key, code);
+	}
+
+	private void updateBlockItemStack(ItemStack itemStack) {
+		this.blockItemStack = itemStack;
+		if (this.blockItemStack != null) {
+			this.itemLocalizedName = languageRegistry
+					.getStringLocalization(blockItemStack.getUnlocalizedName()
+							+ ".name");
+			if (blockItemStack.hasDisplayName()) {
+				// Overwrite itemLocalizedName if displayName is provided
+				this.itemLocalizedName = blockItemStack.getDisplayName();
+			}
+			lockButton.enabled = true;
+			isShowingError = false;
+		} else {
+			this.itemDelegateName = null;
+			lockButton.enabled = false;
+			isShowingError = true;
+		}
 	}
 
 	@Override
@@ -155,22 +164,20 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			break;
 		case 1:
 			// Lock button is pressed
-			String unlocalizedName = this.blockItemStack.getUnlocalizedName();
+			String delegateName = this.blockItemStack.getItem().delegate
+					.name();
 			SuperActivationMod.channel.sendToServer(new LockActivatorMessage(x,
-					y, z, unlocalizedName));
+					y, z, delegateName));
 			// world.markBlockForUpdate(x, y, z);
 			this.player.closeScreen();
 			break;
 		case 2:
-			this.blockItemStack = this.player.inventory.getCurrentItem();
+			updateBlockItemStack(this.player.inventory.getCurrentItem());
 			if (this.blockItemStack != null) {
 				this.blockTextField.setText(this.blockItemStack
 						.getDisplayName());
-				this.isShowingError = false;
-				this.lockButton.enabled = true;
 			} else {
-				this.isShowingError = true;
-				this.lockButton.enabled = false;
+				this.blockTextField.setText("");
 			}
 			break;
 		default:
@@ -196,7 +203,6 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(backgroundTexure);
 
-		// RenderHelper.enableGUIStandardItemLighting();
 		this.drawDefaultBackground();
 		int posX = (this.width - xSize) / 2;
 		int posY = (this.height - ySize) / 2;
@@ -205,7 +211,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		this.drawCenteredString(this.fontRendererObj, this.localizedTitle, posX
 				+ xSize / 2, posY + 20, 0xFFFF00);
 
-		if (itemUnlocalizedName == null) {
+		if (this.itemDelegateName == null) {
 			this.drawString(this.fontRendererObj,
 					"Please type in the name/ID of a block", posX + 15,
 					posY + 40, 0xFFFFFF);
@@ -241,14 +247,15 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 					0xFFFFFF);
 
 			try {
+				RenderHelper.enableStandardItemLighting();
 				renderItem.renderItemIntoGUI(this.fontRendererObj,
 						mc.renderEngine, this.blockItemStack, posX + xSize / 2
 								- 8, posY + 100);
+				RenderHelper.enableGUIStandardItemLighting();
 			} catch (Exception ex) {
-				System.out.println("Error");
+				// System.out.println("Error");
 			}
 		}
-		// RenderHelper.enableStandardItemLighting();
 
 		super.drawScreen(i, j, f);
 	}

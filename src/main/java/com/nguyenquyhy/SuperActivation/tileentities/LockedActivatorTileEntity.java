@@ -8,8 +8,9 @@ import net.minecraft.tileentity.TileEntity;
 
 public class LockedActivatorTileEntity extends TileEntity {
 	public static final String publicName = "lockedActivatorTileEntity";
-
-	public String itemUnlocalizedName;
+	public static final String delegateNameKey = "itemDelegateName";
+	
+	public String itemDelegateName;
 
 	public static String getPublicname() {
 		return publicName;
@@ -22,8 +23,8 @@ public class LockedActivatorTileEntity extends TileEntity {
 	}
 
 	private void writeSynableDataToNBT(NBTTagCompound tag) {
-		if (itemUnlocalizedName != null)
-			tag.setString("itemUnlocalizedName", itemUnlocalizedName);
+		if (itemDelegateName != null)
+			tag.setString(delegateNameKey, itemDelegateName);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class LockedActivatorTileEntity extends TileEntity {
 	}
 
 	private void readSyncableDataFromNBT(NBTTagCompound tag) {
-		itemUnlocalizedName = tag.getString("itemUnlocalizedName");
+		itemDelegateName = tag.getString(delegateNameKey);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 
 public class LockActivatorMessage implements IMessage {
-	private String itemUnlocalizedName;
+	private String itemDelegateName;
 	private int x;
 	private int y;
 	private int z;
@@ -21,11 +21,11 @@ public class LockActivatorMessage implements IMessage {
 
 	}
 
-	public LockActivatorMessage(int x, int y, int z, String itemUnlocalizedName) {
+	public LockActivatorMessage(int x, int y, int z, String itemDelegateName) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.itemUnlocalizedName = itemUnlocalizedName;
+		this.itemDelegateName = itemDelegateName;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class LockActivatorMessage implements IMessage {
 		x = ByteBufUtils.readVarInt(buf, 5);
 		y = ByteBufUtils.readVarInt(buf, 5);
 		z = ByteBufUtils.readVarInt(buf, 5);
-		itemUnlocalizedName = ByteBufUtils.readUTF8String(buf);
+		itemDelegateName = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class LockActivatorMessage implements IMessage {
 		ByteBufUtils.writeVarInt(buf, x, 5);
 		ByteBufUtils.writeVarInt(buf, y, 5);
 		ByteBufUtils.writeVarInt(buf, z, 5);
-		ByteBufUtils.writeUTF8String(buf, itemUnlocalizedName);
+		ByteBufUtils.writeUTF8String(buf, itemDelegateName);
 	}
 
 	public static class Handler implements
@@ -51,8 +51,8 @@ public class LockActivatorMessage implements IMessage {
 				MessageContext ctx) {
 			World world = ctx.getServerHandler().playerEntity.worldObj;
 			LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity)world.getTileEntity(message.x, message.y, message.z);
-			if (tileEntity != null && (tileEntity.itemUnlocalizedName == null || tileEntity.itemUnlocalizedName.isEmpty())) {
-				tileEntity.itemUnlocalizedName = message.itemUnlocalizedName;
+			if (tileEntity != null && (tileEntity.itemDelegateName == null || tileEntity.itemDelegateName.isEmpty())) {
+				tileEntity.itemDelegateName = message.itemDelegateName;
 				world.markBlockForUpdate(message.x, message.y, message.z);
 			}
 			return null;

@@ -12,7 +12,9 @@ import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemRedstone;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.FMLModContainer;
 import cpw.mods.fml.common.Mod;
@@ -58,7 +60,7 @@ public class SuperActivationMod {
 		Block stonePlate = BlockPressurePlate
 				.getBlockFromName("stone_pressure_plate");
 		GameRegistry.addShapelessRecipe(new ItemStack(lockedPressurePlate),
-				new Object[] { stonePlate, Blocks.redstone_wire });
+				new Object[] { stonePlate, Items.redstone });
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
@@ -69,7 +71,7 @@ public class SuperActivationMod {
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event) {
 		if (event.getSide() == Side.CLIENT) {
-			ItemStackHelper.initialize();
+			//ItemStackHelper.initialize();
 		}
 	}
 }
