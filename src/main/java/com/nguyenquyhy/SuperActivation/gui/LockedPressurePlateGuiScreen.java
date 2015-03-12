@@ -29,7 +29,6 @@ import net.minecraft.world.World;
 
 public class LockedPressurePlateGuiScreen extends GuiScreen {
 	private String itemDelegateName;
-	// private String itemUnlocalizedName;
 	private String itemLocalizedName;
 	private String localizedTitle;
 
@@ -105,8 +104,6 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 
 			GuiButton pickButton = new GuiButton(2, posX + 165, posY + 80, 70,
 					20, "Pick current");
-			// pickButton.enabled = this.player.inventory.getCurrentItem() !=
-			// null;
 			this.buttonList.add(pickButton);
 
 			this.lockButton = new GuiButton(1, posX + 15, posY + 110, 100, 20,
@@ -172,6 +169,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			this.player.closeScreen();
 			break;
 		case 2:
+			// Pick current button is pressed
 			updateBlockItemStack(this.player.inventory.getCurrentItem());
 			if (this.blockItemStack != null) {
 				this.blockTextField.setText(this.blockItemStack

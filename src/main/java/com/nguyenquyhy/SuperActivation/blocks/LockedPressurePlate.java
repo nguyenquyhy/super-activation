@@ -38,8 +38,7 @@ public class LockedPressurePlate extends BlockPressurePlate implements
 	public boolean onBlockActivated(World world, int x, int y, int z,
 			EntityPlayer player, int meta, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
-			Minecraft mc = Minecraft.getMinecraft();
-			mc.thePlayer.openGui(SuperActivationMod.instance,
+			player.openGui(SuperActivationMod.instance,
 					GUIs.LockedPressurePlate.ordinal(), world, x, y, z);
 		}
 		return true;
@@ -62,7 +61,8 @@ public class LockedPressurePlate extends BlockPressurePlate implements
 						ItemStack currentStack = player.inventory
 								.getCurrentItem();
 						if (currentStack != null) {
-							String delegateName = currentStack.getItem().delegate.name();
+							String delegateName = currentStack.getItem().delegate
+									.name();
 							LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity) world
 									.getTileEntity(x, y, z);
 

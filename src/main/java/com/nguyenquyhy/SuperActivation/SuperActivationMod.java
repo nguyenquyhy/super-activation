@@ -51,10 +51,6 @@ public class SuperActivationMod {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		// new BlockPressurePlate("stone", Material.rock,
-		// BlockPressurePlate.Sensitivity.mobs)).setHardness(0.5F).setStepSound(soundTypePiston).setBlockName("pressurePlate"));
-		// new BlockPressurePlate("planks_oak", Material.wood,
-		// BlockPressurePlate.Sensitivity.everything)).setHardness(0.5F).setStepSound(soundTypeWood).setBlockName("pressurePlate"));
 		GameRegistry.registerBlock(lockedPressurePlate, "lockedPressurePlate");
 
 		Block stonePlate = BlockPressurePlate
@@ -70,8 +66,5 @@ public class SuperActivationMod {
 
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event) {
-		if (event.getSide() == Side.CLIENT) {
-			//ItemStackHelper.initialize();
-		}
 	}
 }
