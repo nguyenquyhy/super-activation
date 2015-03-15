@@ -39,9 +39,10 @@ public class SuperActivationMod {
 
 	public static SimpleNetworkWrapper channel;
 
-	public static final LockedPressurePlate lockedPressurePlate = new LockedPressurePlate(
-			"stone", Material.rock, BlockPressurePlate.Sensitivity.mobs);
-
+	public static final LockedPressurePlate lockedStonePressurePlate 
+	= new LockedPressurePlate("stone", Material.rock, BlockPressurePlate.Sensitivity.mobs);
+	public static final LockedPressurePlate lockedWoodenPressurePlate 
+	= new LockedPressurePlate("planks_oak", Material.wood, BlockPressurePlate.Sensitivity.everything);
 	@EventHandler
 	public void preinit(FMLPreInitializationEvent event) {
 		channel = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
@@ -51,13 +52,13 @@ public class SuperActivationMod {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		GameRegistry.registerBlock(lockedPressurePlate, "lockedPressurePlate");
+		GameRegistry.registerBlock(lockedStonePressurePlate, "lockedPressurePlate");
 
-		Block stonePlate = BlockPressurePlate
-				.getBlockFromName("stone_pressure_plate");
-		GameRegistry.addShapelessRecipe(new ItemStack(lockedPressurePlate),
-				new Object[] { stonePlate, Items.redstone });
-
+		Block stonePlate = BlockPressurePlate.getBlockFromName("stone_pressure_plate");
+		GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), new Object[] { stonePlate, Items.redstone });
+		Block woodenPlate = BlockPressurePlate.getBlockFromName("wooden_pressure_plate");
+		GameRegistry.addShapelessRecipe(new ItemStack(lockedWoodenPressurePlate), new Object[] { woodenPlate, Items.redstone });
+		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 		GameRegistry.registerTileEntity(LockedActivatorTileEntity.class,

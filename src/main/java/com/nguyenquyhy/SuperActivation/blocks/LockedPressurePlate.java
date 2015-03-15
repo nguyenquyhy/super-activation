@@ -29,7 +29,8 @@ public class LockedPressurePlate extends BlockPressurePlate implements
 			BlockPressurePlate.Sensitivity sensitivity) {
 		super(icon, material, sensitivity);
 		setHardness(0.5F);
-		setStepSound(Block.soundTypePiston);
+		if (material == Material.rock) setStepSound(Block.soundTypePiston);
+		else setStepSound(Block.soundTypeWood);	
 		setCreativeTab(CreativeTabs.tabRedstone);
 		setBlockName("lockedPressurePlate");
 	}
