@@ -3,6 +3,7 @@ package com.nguyenquyhy.SuperActivation;
 import com.nguyenquyhy.SuperActivation.blocks.LockedPressurePlate;
 import com.nguyenquyhy.SuperActivation.gui.GuiHandler;
 import com.nguyenquyhy.SuperActivation.packets.LockActivatorMessage;
+import com.nguyenquyhy.SuperActivation.proxies.Proxy;
 import com.nguyenquyhy.SuperActivation.tileentities.LockedActivatorTileEntity;
 
 import net.minecraft.block.Block;
@@ -12,6 +13,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.RegistryNamespacedDefaultedByKey;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
@@ -31,10 +33,15 @@ public class SuperActivationMod {
     @Mod.Instance
     public static SuperActivationMod instance;
 
+    @SidedProxy(clientSide = "com.nguyenquyhy.SuperActivation.proxies.ClientProxy", serverSide = "com.nguyenquyhy.SuperActivation.proxies.Proxy")
+    public static Proxy proxy;
+
     public static SimpleNetworkWrapper channel;
 
-    public static final LockedPressurePlate lockedStonePressurePlate = new LockedPressurePlate(Material.rock, BlockPressurePlate.Sensitivity.MOBS);
-    public static final LockedPressurePlate lockedWoodenPressurePlate = new LockedPressurePlate(Material.wood, BlockPressurePlate.Sensitivity.EVERYTHING);
+    public static final LockedPressurePlate lockedStonePressurePlate =
+            new LockedPressurePlate("locked_stone_pressure_plate", Material.rock, BlockPressurePlate.Sensitivity.MOBS);
+    public static final LockedPressurePlate lockedWoodenPressurePlate =
+            new LockedPressurePlate("locked_wooden_pressure_plate" ,Material.wood, BlockPressurePlate.Sensitivity.EVERYTHING);
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
@@ -44,8 +51,8 @@ public class SuperActivationMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        GameRegistry.registerBlock(lockedStonePressurePlate, "locked_stone_pressure_plate");
-        GameRegistry.registerBlock(lockedWoodenPressurePlate, "locked_wooden_pressure_plate");
+        GameRegistry.registerBlock(lockedStonePressurePlate, lockedStonePressurePlate.getName());
+        GameRegistry.registerBlock(lockedWoodenPressurePlate, lockedWoodenPressurePlate.getName());
 
         Block stonePlate = BlockPressurePlate.getBlockFromName("stone_pressure_plate");
         GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), new Object[]{stonePlate, Items.redstone});
@@ -55,6 +62,8 @@ public class SuperActivationMod {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
         GameRegistry.registerTileEntity(LockedActivatorTileEntity.class, LockedActivatorTileEntity.publicName);
+
+        proxy.registerItems();
     }
 
     @Mod.EventHandler

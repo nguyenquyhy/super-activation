@@ -21,17 +21,23 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class LockedPressurePlate extends BlockPressurePlate implements ITileEntityProvider {
-    public LockedPressurePlate(Material material, BlockPressurePlate.Sensitivity sensitivity) {
+    private final String name;
+
+    public LockedPressurePlate(String name, Material material, BlockPressurePlate.Sensitivity sensitivity) {
         super(material, sensitivity);
+        this.name = name;
         setHardness(0.5F);
         if (material == Material.rock) {
             setStepSound(Block.soundTypePiston);
             setUnlocalizedName("lockedPressurePlateStone");
-        }
-        else {
+        } else {
             setStepSound(Block.soundTypeWood);
             setUnlocalizedName("lockedPressurePlateWood");
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

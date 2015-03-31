@@ -38,7 +38,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 	protected final BlockPos blockPos;
 
 	protected final LanguageRegistry languageRegistry = LanguageRegistry.instance();
-	protected final RenderItem renderItem = mc.getRenderItem();
+	protected final RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 
 	private GuiTextField blockTextField;
 	private GuiButton lockButton;
