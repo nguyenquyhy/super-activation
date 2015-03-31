@@ -99,9 +99,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			String[] tokens = this.itemDelegateName.split(":", 2);
 			Item item = GameRegistry.findItem(tokens[0], tokens[1]);
 			this.blockItemStack = new ItemStack(item);
-			this.itemLocalizedName = languageRegistry
-					.getStringLocalization(blockItemStack.getUnlocalizedName()
-							+ ".name");
+			this.itemLocalizedName = languageRegistry.getStringLocalization(blockItemStack.getUnlocalizedName() + ".name");
 		}
 	}
 
@@ -109,9 +107,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 	protected void keyTyped(char key, int code) throws IOException {
 		if (blockTextField != null && blockTextField.isFocused()) {
 			blockTextField.textboxKeyTyped(key, code);
-
 			String text = blockTextField.getText();
-
 			updateBlockItemStack(ItemStackHelper.findItemStackByInput(text));
 		}
 		super.keyTyped(key, code);
@@ -188,42 +184,29 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		this.drawCenteredString(this.fontRendererObj, this.localizedTitle, posX + xSize / 2, posY + 20, 0xFFFF00);
 
 		if (this.itemDelegateName == null) {
-			this.drawString(this.fontRendererObj,
-					"Please type in the name/ID of a block", posX + 15,
-					posY + 40, 0xFFFFFF);
-			this.drawString(this.fontRendererObj,
-					"that is used to lock this plate!", posX + 15, posY + 55,
-					0xFFFFFF);
+			this.drawString(this.fontRendererObj, "Please type in the name/ID of a block", posX + 15, posY + 40, 0xFFFFFF);
+			this.drawString(this.fontRendererObj, "that is used to lock this plate!", posX + 15, posY + 55, 0xFFFFFF);
 			this.blockTextField.drawTextBox();
 
 			if (!isShowingError) {
 				try {
-					this.drawString(this.fontRendererObj,
-							this.itemLocalizedName, posX + 140, posY + 116,
-							0x00FF00);
+					this.drawString(this.fontRendererObj, this.itemLocalizedName, posX + 140, posY + 116, 0x00FF00);
 					RenderHelper.enableStandardItemLighting();
-
-					renderItem.func_180450_b(this.blockItemStack, posX + 120, posY + 112);
+					renderItem.renderItemIntoGUI(this.blockItemStack, posX + 120, posY + 112);
 					RenderHelper.enableGUIStandardItemLighting();
 				} catch (Exception ex) {
 
 				}
 			} else {
-				this.drawString(this.fontRendererObj, "Incorrect name/ID!",
-						posX + 120, posY + 116, 0xFF0000);
+				this.drawString(this.fontRendererObj, "Incorrect name/ID!", posX + 120, posY + 116, 0xFF0000);
 			}
 		} else {
-			this.drawCenteredString(this.fontRendererObj,
-					"You must be holding a " + this.itemLocalizedName, posX
-							+ xSize / 2, posY + 60, 0xFFFFFF);
-
-			this.drawCenteredString(this.fontRendererObj,
-					"to activate this plate!", posX + xSize / 2, posY + 80,
-					0xFFFFFF);
+			this.drawCenteredString(this.fontRendererObj, "You must be holding a " + this.itemLocalizedName, posX + xSize / 2, posY + 60, 0xFFFFFF);
+			this.drawCenteredString(this.fontRendererObj, "to activate this plate!", posX + xSize / 2, posY + 80, 0xFFFFFF);
 
 			try {
 				RenderHelper.enableStandardItemLighting();
-				renderItem.func_180450_b(this.blockItemStack, posX + xSize / 2 - 8, posY + 100);
+				renderItem.renderItemIntoGUI(this.blockItemStack, posX + xSize / 2 - 8, posY + 100);
 				RenderHelper.enableGUIStandardItemLighting();
 			} catch (Exception ex) {
 				// System.out.println("Error");
