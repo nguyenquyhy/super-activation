@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
 
 public class ItemStackHelper {
 	private static class CachedItem {
@@ -21,9 +20,7 @@ public class ItemStackHelper {
 		public final String localizedName;
 		public final ItemStack itemStack;
 
-		public CachedItem(int id, int meta, String stringId,
-				String unlocalizedName, String localizedName,
-				ItemStack itemStack) {
+		public CachedItem(int id, int meta, String stringId, String unlocalizedName, String localizedName, ItemStack itemStack) {
 			this.id = id;
 			this.meta = meta;
 			this.stringId = stringId;
@@ -33,8 +30,7 @@ public class ItemStackHelper {
 		}
 	}
 
-	private static final LanguageRegistry languageRegistry = LanguageRegistry
-			.instance();
+	private static final LanguageRegistry languageRegistry = LanguageRegistry.instance();
 	private static List<CachedItem> cachedItems = null;
 
 	public static void initialize() {
@@ -111,7 +107,7 @@ public class ItemStackHelper {
 				}
 			}
 			
-			return GameRegistry.findItemStack("pixelmon", input, 1);
+			return new ItemStack(GameRegistry.findItem("pixelmon", input), 1);
 		}
 		return null;
 	}

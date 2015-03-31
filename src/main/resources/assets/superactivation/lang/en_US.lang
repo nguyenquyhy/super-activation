@@ -3,4 +3,5 @@ language.name=English
 language.region=US
 language.code=en_US
 
-tile.lockedPressurePlate.name=Locked Pressure Plate
+tile.lockedPressurePlateStone.name=Locked Stone Pressure Plate
+tile.lockedPressurePlateWood.name=Locked Wooden Pressure Plate

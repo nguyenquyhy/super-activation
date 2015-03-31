@@ -10,15 +10,15 @@ import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.RegistryNamespacedDefaultedByKey;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = SuperActivationMod.MODID, name = SuperActivationMod.MODNAME, version = "")
 public class SuperActivationMod {
@@ -26,24 +26,23 @@ public class SuperActivationMod {
     public static final String MODID = "superactivation";
     public static final String VERSION = "1.0";
 
+    //public static final RegistryNamespacedDefaultedByKey blockRegistry = net.minecraftforge.fml.common.registry.GameData.getBlockRegistry();
+
     @Mod.Instance
     public static SuperActivationMod instance;
 
     public static SimpleNetworkWrapper channel;
 
-    public static final LockedPressurePlate lockedStonePressurePlate
-            = new LockedPressurePlate("stone", Material.rock, BlockPressurePlate.Sensitivity.mobs);
-    public static final LockedPressurePlate lockedWoodenPressurePlate
-            = new LockedPressurePlate("planks_oak", Material.wood, BlockPressurePlate.Sensitivity.everything);
+    public static final LockedPressurePlate lockedStonePressurePlate = new LockedPressurePlate(Material.rock, BlockPressurePlate.Sensitivity.MOBS);
+    public static final LockedPressurePlate lockedWoodenPressurePlate = new LockedPressurePlate(Material.wood, BlockPressurePlate.Sensitivity.EVERYTHING);
 
-    @EventHandler
+    @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
         channel = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
-        channel.registerMessage(LockActivatorMessage.Handler.class,
-                LockActivatorMessage.class, 0, Side.SERVER);
+        channel.registerMessage(LockActivatorMessage.Handler.class, LockActivatorMessage.class, 0, Side.SERVER);
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         GameRegistry.registerBlock(lockedStonePressurePlate, "locked_stone_pressure_plate");
         GameRegistry.registerBlock(lockedWoodenPressurePlate, "locked_wooden_pressure_plate");
@@ -55,11 +54,10 @@ public class SuperActivationMod {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
-        GameRegistry.registerTileEntity(LockedActivatorTileEntity.class,
-                LockedActivatorTileEntity.publicName);
+        GameRegistry.registerTileEntity(LockedActivatorTileEntity.class, LockedActivatorTileEntity.publicName);
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void serverStarted(FMLServerStartedEvent event) {
     }
 }

@@ -11,40 +11,42 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-public class LockedPressurePlate extends BlockPressurePlate implements
-        ITileEntityProvider {
-    public LockedPressurePlate(String icon, Material material,
-                               BlockPressurePlate.Sensitivity sensitivity) {
-        super(icon, material, sensitivity);
+public class LockedPressurePlate extends BlockPressurePlate implements ITileEntityProvider {
+    public LockedPressurePlate(Material material, BlockPressurePlate.Sensitivity sensitivity) {
+        super(material, sensitivity);
         setHardness(0.5F);
-        if (material == Material.rock)
+        if (material == Material.rock) {
             setStepSound(Block.soundTypePiston);
-        else
+            setUnlocalizedName("lockedPressurePlateStone");
+        }
+        else {
             setStepSound(Block.soundTypeWood);
-        setCreativeTab(CreativeTabs.tabRedstone);
-        setBlockName("lockedPressurePlate");
+            setUnlocalizedName("lockedPressurePlateWood");
+        }
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z,
-                                    EntityPlayer player, int meta, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
+                                    EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
-            player.openGui(SuperActivationMod.instance,
-                    GUIs.LockedPressurePlate.ordinal(), world, x, y, z);
+            player.openGui(SuperActivationMod.instance, GUIs.LockedPressurePlate.ordinal(),
+                    world, pos.getX(), pos.getY(), pos.getZ());
         }
         return true;
     }
 
     @Override
-    public int func_150065_e(World world, int x, int y, int z) {
-        List list = world.getEntitiesWithinAABB(EntityPlayer.class,
-                this.func_150061_a(x, y, z));
+    public int computeRedstoneStrength(World world, BlockPos blockPos) {
+        List list = world.getEntitiesWithinAABB(EntityPlayer.class, this.getSensitiveAABB(blockPos));
 
         if (list != null && !list.isEmpty()) {
             Iterator iterator = list.iterator();
@@ -55,17 +57,13 @@ public class LockedPressurePlate extends BlockPressurePlate implements
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) entity;
                     if (!player.doesEntityNotTriggerPressurePlate()) {
-                        ItemStack currentStack = player.inventory
-                                .getCurrentItem();
+                        ItemStack currentStack = player.inventory.getCurrentItem();
                         if (currentStack != null) {
-                            String delegateName = currentStack.getItem().delegate
-                                    .name();
-                            LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity) world
-                                    .getTileEntity(x, y, z);
+                            String delegateName = currentStack.getItem().delegate.name();
+                            LockedActivatorTileEntity tileEntity =
+                                    (LockedActivatorTileEntity) world.getTileEntity(blockPos);
 
-                            if (tileEntity != null
-                                    && delegateName
-                                    .equals(tileEntity.itemDelegateName))
+                            if (tileEntity != null && delegateName.equals(tileEntity.itemDelegateName))
                                 return 15;
                         }
                     }
@@ -82,7 +80,7 @@ public class LockedPressurePlate extends BlockPressurePlate implements
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 }
