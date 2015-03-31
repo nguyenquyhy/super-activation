@@ -17,10 +17,6 @@ public class LockActivatorMessage implements IMessage {
 	private int y;
 	private int z;
 
-	public LockActivatorMessage() {
-
-	}
-
 	public LockActivatorMessage(BlockPos blockPos, String itemDelegateName) {
 		this.x = blockPos.getX();
 		this.y = blockPos.getY();

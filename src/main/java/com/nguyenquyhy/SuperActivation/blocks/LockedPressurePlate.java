@@ -12,7 +12,6 @@ import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -66,8 +65,7 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
                         ItemStack currentStack = player.inventory.getCurrentItem();
                         if (currentStack != null) {
                             String delegateName = currentStack.getItem().delegate.name();
-                            LockedActivatorTileEntity tileEntity =
-                                    (LockedActivatorTileEntity) world.getTileEntity(blockPos);
+                            LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity) world.getTileEntity(blockPos);
 
                             if (tileEntity != null && delegateName.equals(tileEntity.itemDelegateName))
                                 return 15;
@@ -83,10 +81,5 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new LockedActivatorTileEntity();
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
     }
 }
