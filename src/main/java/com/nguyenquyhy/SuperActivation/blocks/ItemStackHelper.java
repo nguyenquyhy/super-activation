@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.LanguageRegistry;
 
@@ -40,11 +42,11 @@ public class ItemStackHelper {
 			Set keys = Block.blockRegistry.getKeys();
 			
 			for (Object key : keys) {
-				if (key instanceof String) {
-					String stringId = (String) key;
-					Block block = (Block) Block.blockRegistry
-							.getObject(stringId);
-					if (block != null) {
+				if (key instanceof ResourceLocation) {
+					ResourceLocation resourceLocation = (ResourceLocation) key;
+					String resourceName = resourceLocation.getResourceDomain() + ":" + resourceLocation.getResourcePath();
+					Block block = (Block) Block.blockRegistry.getObject(resourceName);
+					if (block != null && !(block instanceof BlockAir)) {
 						// System.out.println(stringId);
 
 						Item item = Item.getItemFromBlock(block);
@@ -59,22 +61,16 @@ public class ItemStackHelper {
 										list);
 								for (Object obj : list) {
 									itemStack = (ItemStack) obj;
-									String unlocalizedName = itemStack
-											.getUnlocalizedName();
-									String localizedName = itemStack
-											.getDisplayName();
-									cachedItems.add(new CachedItem(id,
-											itemStack.getItemDamage(),
-											stringId, unlocalizedName,
-											localizedName, itemStack));
+									String unlocalizedName = itemStack.getUnlocalizedName();
+									String localizedName = itemStack.getDisplayName();
+									cachedItems.add(new CachedItem(id, itemStack.getItemDamage(),
+											resourceName, unlocalizedName, localizedName, itemStack));
 								}
 							} else {
 								String localizedName = block.getLocalizedName();
-								String unlocalizedName = block
-										.getUnlocalizedName();
-								cachedItems.add(new CachedItem(id, 0, stringId,
-										unlocalizedName, localizedName,
-										itemStack));
+								String unlocalizedName = block.getUnlocalizedName();
+								cachedItems.add(new CachedItem(id, 0, resourceName,
+										unlocalizedName, localizedName, itemStack));
 							}
 						} else {
 							// Unobtainable blocks
@@ -106,8 +102,11 @@ public class ItemStackHelper {
 					return cachedItem.itemStack;
 				}
 			}
-			
-			return new ItemStack(GameRegistry.findItem("pixelmon", input), 1);
+
+			Item item = GameRegistry.findItem("pixelmon", input);
+			if (item != null) {
+				return new ItemStack(item, 1);
+			}
 		}
 		return null;
 	}
