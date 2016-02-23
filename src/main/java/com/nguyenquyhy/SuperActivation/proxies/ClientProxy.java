@@ -21,5 +21,9 @@ public class ClientProxy extends Proxy {
                 new ModelResourceLocation(SuperActivationMod.MODID + ":" + SuperActivationMod.lockedStonePressurePlate.getName(), "inventory"));
         renderItem.getItemModelMesher().register(Item.getItemFromBlock(SuperActivationMod.lockedWoodenPressurePlate), 0,
                 new ModelResourceLocation(SuperActivationMod.MODID + ":" + SuperActivationMod.lockedWoodenPressurePlate.getName(), "inventory"));
+        renderItem.getItemModelMesher().register(Item.getItemFromBlock(SuperActivationMod.invisibleLockedStonePressurePlate), 0,
+                new ModelResourceLocation(SuperActivationMod.MODID + ":" + SuperActivationMod.invisibleLockedStonePressurePlate.getName(), "inventory"));
+        renderItem.getItemModelMesher().register(Item.getItemFromBlock(SuperActivationMod.invisibleLockedWoodenPressurePlate), 0,
+                new ModelResourceLocation(SuperActivationMod.MODID + ":" + SuperActivationMod.invisibleLockedWoodenPressurePlate.getName(), "inventory"));
     }
 }

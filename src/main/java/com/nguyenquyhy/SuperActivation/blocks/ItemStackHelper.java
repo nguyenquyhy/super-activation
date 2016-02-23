@@ -45,7 +45,7 @@ public class ItemStackHelper {
 				if (key instanceof ResourceLocation) {
 					ResourceLocation resourceLocation = (ResourceLocation) key;
 					String resourceName = resourceLocation.getResourceDomain() + ":" + resourceLocation.getResourcePath();
-					Block block = (Block) Block.blockRegistry.getObject(resourceName);
+					Block block = Block.blockRegistry.getObject(resourceLocation);
 					if (block != null && !(block instanceof BlockAir)) {
 						// System.out.println(stringId);
 

@@ -1,0 +1,6 @@
+{
+    "parent": "block/pressure_plate_inventory",
+    "textures": {
+        "texture": "superactivation:transparent_planks_oak"
+    }
+}

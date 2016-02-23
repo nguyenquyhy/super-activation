@@ -2,6 +2,7 @@ package com.nguyenquyhy.SuperActivation.blocks;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import com.nguyenquyhy.SuperActivation.SuperActivationMod;
 import com.nguyenquyhy.SuperActivation.gui.GUIs;
@@ -21,17 +22,25 @@ import net.minecraft.world.World;
 
 public class LockedPressurePlate extends BlockPressurePlate implements ITileEntityProvider {
     private final String name;
+    private final boolean invisible;
 
-    public LockedPressurePlate(String name, Material material, BlockPressurePlate.Sensitivity sensitivity) {
+    public LockedPressurePlate(String name, Material material, BlockPressurePlate.Sensitivity sensitivity, boolean invisible) {
         super(material, sensitivity);
         this.name = name;
+        this.invisible = invisible;
         setHardness(0.5F);
         if (material == Material.rock) {
             setStepSound(Block.soundTypePiston);
-            setUnlocalizedName("lockedPressurePlateStone");
+            if (invisible)
+                setUnlocalizedName("invisibleLockedPressurePlateStone");
+            else
+                setUnlocalizedName("lockedPressurePlateStone");
         } else {
             setStepSound(Block.soundTypeWood);
-            setUnlocalizedName("lockedPressurePlateWood");
+            if (invisible)
+                setUnlocalizedName("invisibleLockedPressurePlateWood");
+            else
+                setUnlocalizedName("lockedPressurePlateWood");
         }
     }
 
@@ -81,5 +90,16 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new LockedActivatorTileEntity();
+    }
+
+    @Override
+    public int getRenderType() {
+        if (this.invisible) return -1;
+        else return super.getRenderType();
+    }
+
+    @Override
+    public int quantityDropped(Random random) {
+        return 1;
     }
 }

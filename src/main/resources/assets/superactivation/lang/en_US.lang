@@ -5,3 +5,5 @@ language.code=en_US
 
 tile.lockedPressurePlateStone.name=Locked Stone Pressure Plate
 tile.lockedPressurePlateWood.name=Locked Wooden Pressure Plate
+tile.invisibleLockedPressurePlateStone.name=Invisible Locked Stone Pressure Plate
+tile.invisibleLockedPressurePlateWood.name=Invisible Locked Wooden Pressure Plate
