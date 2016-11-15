@@ -2,11 +2,8 @@ package com.nguyenquyhy.SuperActivation.tileentities;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class LockedActivatorTileEntity extends TileEntity {
@@ -20,9 +17,9 @@ public class LockedActivatorTileEntity extends TileEntity {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		writeSynableDataToNBT(tag);
-		super.writeToNBT(tag);
+		return super.writeToNBT(tag);
 	}
 
 	@Override
@@ -31,17 +28,18 @@ public class LockedActivatorTileEntity extends TileEntity {
 		super.readFromNBT(tag);
 	}
 
-	@Override
-	public Packet getDescriptionPacket() {
-		NBTTagCompound syncData = new NBTTagCompound();
-		this.writeSynableDataToNBT(syncData);
-		return new S35PacketUpdateTileEntity(pos, 1, syncData);
-	}
+//	@Override
+//	public Packet getDescriptionPacket() {
+//		NBTTagCompound syncData = new NBTTagCompound();
+//		this.writeSynableDataToNBT(syncData);
+//		return new S35PacketUpdateTileEntity(pos, 1, syncData);
+//	}
 
-	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		readSyncableDataFromNBT(pkt.getNbtCompound());
-	}
+//	@Override
+//	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+//		readSyncableDataFromNBT(pkt.getNbtCompound());
+//	}
+
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {

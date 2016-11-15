@@ -1,10 +1,10 @@
 package com.nguyenquyhy.SuperActivation.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.util.BlockPos;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.LanguageRegistry;
 import org.lwjgl.opengl.GL11;
 
 import com.nguyenquyhy.SuperActivation.SuperActivationMod;
@@ -35,7 +35,6 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 	protected final World world;
 	protected final BlockPos blockPos;
 
-	protected final LanguageRegistry languageRegistry = LanguageRegistry.instance();
 	protected final RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 
 	private GuiTextField blockTextField;
@@ -75,7 +74,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 		GuiButton closeButton = new GuiButton(0, posX + xSize - 5 - closeButtonSize, posY + 10, closeButtonSize, closeButtonSize, "X");
 		this.buttonList.add(closeButton);
 
-		this.localizedTitle = languageRegistry.getStringLocalization("tile.lockedPressurePlate.name");
+		this.localizedTitle = I18n.translateToLocal("tile.lockedPressurePlate.name");
 
 		if (this.itemDelegateName == null) {
 			// Not locked yet
@@ -97,7 +96,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			String[] tokens = this.itemDelegateName.split(":", 2);
 			Item item = GameRegistry.findItem(tokens[0], tokens[1]);
 			this.blockItemStack = new ItemStack(item);
-			this.itemLocalizedName = languageRegistry.getStringLocalization(blockItemStack.getUnlocalizedName() + ".name");
+			this.itemLocalizedName = I18n.translateToLocal(blockItemStack.getUnlocalizedName() + ".name");
 		}
 	}
 
@@ -114,7 +113,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 	private void updateBlockItemStack(ItemStack itemStack) {
 		this.blockItemStack = itemStack;
 		if (this.blockItemStack != null) {
-			this.itemLocalizedName = languageRegistry.getStringLocalization(blockItemStack.getUnlocalizedName() + ".name");
+			this.itemLocalizedName = I18n.translateToLocal(blockItemStack.getUnlocalizedName() + ".name");
 			if (blockItemStack.hasDisplayName()) {
 				// Overwrite itemLocalizedName if displayName is provided
 				this.itemLocalizedName = blockItemStack.getDisplayName();
@@ -137,7 +136,7 @@ public class LockedPressurePlateGuiScreen extends GuiScreen {
 			break;
 		case 1:
 			// Lock button is pressed
-			String delegateName = this.blockItemStack.getItem().delegate.name();
+			String delegateName = this.blockItemStack.getItem().delegate.name().toString();
 			SuperActivationMod.channel.sendToServer(new LockActivatorMessage(blockPos, delegateName));
 			// world.markBlockForUpdate(x, y, z);
 			this.player.closeScreen();

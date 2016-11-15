@@ -1,6 +1,6 @@
 package com.nguyenquyhy.SuperActivation.packets;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import com.nguyenquyhy.SuperActivation.tileentities.LockedActivatorTileEntity;
@@ -51,7 +51,7 @@ public class LockActivatorMessage implements IMessage {
             LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity) world.getTileEntity(blockPos);
             if (tileEntity != null && (tileEntity.itemDelegateName == null || tileEntity.itemDelegateName.isEmpty())) {
                 tileEntity.itemDelegateName = message.itemDelegateName;
-                world.markBlockForUpdate(blockPos);
+                //world.update(blockPos);
             }
             return null;
         }
