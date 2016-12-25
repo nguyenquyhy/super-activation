@@ -23,11 +23,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = SuperActivationMod.MODID, name = SuperActivationMod.MODNAME, version = "")
+@Mod(modid = SuperActivationMod.MODID, name = SuperActivationMod.MODNAME, version = SuperActivationMod.VERSION)
 public class SuperActivationMod {
     public static final String MODNAME = "Super Activation";
     public static final String MODID = "superactivation";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "1.2.0";
 
     //public static final RegistryNamespacedDefaultedByKey blockRegistry = net.minecraftforge.fml.common.registry.GameData.getBlockRegistry();
 
