@@ -16,9 +16,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class LockedPressurePlate extends BlockPressurePlate implements ITileEntityProvider {
     private final String name;
@@ -29,14 +33,12 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
         this.name = name;
         this.invisible = invisible;
         setHardness(0.5F);
-        if (material == Material.rock) {
-            setStepSound(Block.soundTypePiston);
+        if (material == Material.ROCK) {
             if (invisible)
                 setUnlocalizedName("invisibleLockedPressurePlateStone");
             else
                 setUnlocalizedName("lockedPressurePlateStone");
         } else {
-            setStepSound(Block.soundTypeWood);
             if (invisible)
                 setUnlocalizedName("invisibleLockedPressurePlateWood");
             else
@@ -49,8 +51,7 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
-                                    EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             player.openGui(SuperActivationMod.instance, GUIs.LockedPressurePlate.ordinal(),
                     world, pos.getX(), pos.getY(), pos.getZ());
@@ -60,20 +61,17 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
 
     @Override
     public int computeRedstoneStrength(World world, BlockPos blockPos) {
-        List list = world.getEntitiesWithinAABB(EntityPlayer.class, this.getSensitiveAABB(blockPos));
+        List list = world.getEntitiesWithinAABB(EntityPlayer.class, PRESSURE_AABB.offset(blockPos));
 
-        if (list != null && !list.isEmpty()) {
-            Iterator iterator = list.iterator();
+        if (!list.isEmpty()) {
 
-            while (iterator.hasNext()) {
-                Object entity = iterator.next();
-
+            for (Object entity : list) {
                 if (entity instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) entity;
                     if (!player.doesEntityNotTriggerPressurePlate()) {
                         ItemStack currentStack = player.inventory.getCurrentItem();
                         if (currentStack != null) {
-                            String delegateName = currentStack.getItem().delegate.name();
+                            String delegateName = currentStack.getItem().delegate.name().toString();
                             LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity) world.getTileEntity(blockPos);
 
                             if (tileEntity != null && delegateName.equals(tileEntity.itemDelegateName))
@@ -93,9 +91,9 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
     }
 
     @Override
-    public int getRenderType() {
-        if (this.invisible) return -1;
-        else return super.getRenderType();
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        if (this.invisible) return EnumBlockRenderType.INVISIBLE;
+        else return super.getRenderType(state);
     }
 
     @Override

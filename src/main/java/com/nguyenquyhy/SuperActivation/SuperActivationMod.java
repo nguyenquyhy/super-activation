@@ -12,7 +12,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.RegistryNamespacedDefaultedByKey;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -40,14 +39,14 @@ public class SuperActivationMod {
     public static SimpleNetworkWrapper channel;
 
     public static final LockedPressurePlate lockedStonePressurePlate =
-            new LockedPressurePlate("locked_stone_pressure_plate", Material.rock, BlockPressurePlate.Sensitivity.MOBS, false);
+            new LockedPressurePlate("locked_stone_pressure_plate", Material.ROCK, BlockPressurePlate.Sensitivity.MOBS, false);
     public static final LockedPressurePlate lockedWoodenPressurePlate =
-            new LockedPressurePlate("locked_wooden_pressure_plate", Material.wood, BlockPressurePlate.Sensitivity.EVERYTHING, false);
+            new LockedPressurePlate("locked_wooden_pressure_plate", Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING, false);
 
     public static final LockedPressurePlate invisibleLockedStonePressurePlate =
-            new LockedPressurePlate("invisible_locked_stone_pressure_plate", Material.rock, BlockPressurePlate.Sensitivity.MOBS, true);
+            new LockedPressurePlate("invisible_locked_stone_pressure_plate", Material.ROCK, BlockPressurePlate.Sensitivity.MOBS, true);
     public static final LockedPressurePlate invisibleLockedWoodenPressurePlate =
-            new LockedPressurePlate("invisible_locked_wooden_pressure_plate", Material.wood, BlockPressurePlate.Sensitivity.EVERYTHING, true);
+            new LockedPressurePlate("invisible_locked_wooden_pressure_plate", Material.WOOD, BlockPressurePlate.Sensitivity.EVERYTHING, true);
 
     @Mod.EventHandler
     public void preinit(FMLPreInitializationEvent event) {
@@ -66,11 +65,11 @@ public class SuperActivationMod {
         Block stonePlate = BlockPressurePlate.getBlockFromName("stone_pressure_plate");
         Block woodenPlate = BlockPressurePlate.getBlockFromName("wooden_pressure_plate");
 
-        GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), new Object[]{ stonePlate, Items.redstone });
-        GameRegistry.addShapelessRecipe(new ItemStack(lockedWoodenPressurePlate), new Object[]{ woodenPlate, Items.redstone });
+        GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), new Object[]{ stonePlate, Items.REDSTONE });
+        GameRegistry.addShapelessRecipe(new ItemStack(lockedWoodenPressurePlate), new Object[]{ woodenPlate, Items.REDSTONE });
 
-        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedStonePressurePlate), new Object[]{ stonePlate, Items.redstone, Blocks.glass_pane });
-        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedWoodenPressurePlate), new Object[]{ woodenPlate, Items.redstone, Blocks.glass_pane });
+        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedStonePressurePlate), new Object[]{ stonePlate, Items.REDSTONE, Blocks.GLASS_PANE });
+        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedWoodenPressurePlate), new Object[]{ woodenPlate, Items.REDSTONE, Blocks.GLASS_PANE });
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 

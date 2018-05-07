@@ -1,5 +1,5 @@
 {
-    "parent": "block/wooden_pressure_plate_inventory",
+    "parent": "block/wooden_pressure_plate_up",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],
