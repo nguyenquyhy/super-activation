@@ -38,3 +38,6 @@ This block can be crafted by combining a normal stone/wooden Pressure Plate with
 
 1.3.0
 - Update to Minecraft 1.10.2
+
+1.4.0
+- Update to Minecraft 1.12.2

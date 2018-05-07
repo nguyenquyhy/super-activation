@@ -7,8 +7,10 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -48,14 +50,15 @@ public class ItemStackHelper {
                         // System.out.println(stringId);
 
                         Item item = Item.getItemFromBlock(block);
-                        if (item != null) {
-                            // Obtainable blocks
-                            ItemStack itemStack = new ItemStack(block);
-                            int id = Block.getIdFromBlock(block);
-                            Boolean hasSubType = item.getHasSubtypes();
-                            if (hasSubType) {
-                                List list = new ArrayList();
-                                item.getSubItems(item, item.getCreativeTab(), list);
+                        // Obtainable blocks
+                        ItemStack itemStack = new ItemStack(block);
+                        int id = Block.getIdFromBlock(block);
+                        Boolean hasSubType = item.getHasSubtypes();
+                        if (hasSubType) {
+                            CreativeTabs tabs = item.getCreativeTab();
+                            if (tabs != null) {
+                                NonNullList<ItemStack> list = NonNullList.create();
+                                item.getSubItems(tabs, list);
                                 for (Object obj : list) {
                                     itemStack = (ItemStack) obj;
                                     String unlocalizedName = itemStack.getUnlocalizedName();
@@ -63,14 +66,12 @@ public class ItemStackHelper {
                                     cachedItems.add(new CachedItem(id, itemStack.getItemDamage(),
                                             resourceName, unlocalizedName, localizedName, itemStack));
                                 }
-                            } else {
-                                String localizedName = block.getLocalizedName();
-                                String unlocalizedName = block.getUnlocalizedName();
-                                cachedItems.add(new CachedItem(id, 0, resourceName,
-                                        unlocalizedName, localizedName, itemStack));
                             }
                         } else {
-                            // Unobtainable blocks
+                            String localizedName = block.getLocalizedName();
+                            String unlocalizedName = block.getUnlocalizedName();
+                            cachedItems.add(new CachedItem(id, 0, resourceName,
+                                    unlocalizedName, localizedName, itemStack));
                         }
                     }
                 }
@@ -100,7 +101,7 @@ public class ItemStackHelper {
                 }
             }
 
-            Item item = GameRegistry.findItem("pixelmon", input);
+            Item item = GameRegistry.findRegistry(Item.class).getValue(new ResourceLocation("pixelmon", input));
             if (item != null) {
                 return new ItemStack(item, 1);
             }
