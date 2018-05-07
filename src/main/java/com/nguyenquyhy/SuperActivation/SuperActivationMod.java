@@ -5,7 +5,6 @@ import com.nguyenquyhy.SuperActivation.gui.GuiHandler;
 import com.nguyenquyhy.SuperActivation.packets.LockActivatorMessage;
 import com.nguyenquyhy.SuperActivation.proxies.Proxy;
 import com.nguyenquyhy.SuperActivation.tileentities.LockedActivatorTileEntity;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.material.Material;
@@ -26,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class SuperActivationMod {
     public static final String MODNAME = "Super Activation";
     public static final String MODID = "superactivation";
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "1.3.0";
 
     //public static final RegistryNamespacedDefaultedByKey blockRegistry = net.minecraftforge.fml.common.registry.GameData.getBlockRegistry();
 
@@ -56,20 +55,14 @@ public class SuperActivationMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        GameRegistry.registerBlock(lockedStonePressurePlate, lockedStonePressurePlate.getName());
-        GameRegistry.registerBlock(lockedWoodenPressurePlate, lockedWoodenPressurePlate.getName());
-
-        GameRegistry.registerBlock(invisibleLockedStonePressurePlate, invisibleLockedStonePressurePlate.getName());
-        GameRegistry.registerBlock(invisibleLockedWoodenPressurePlate, invisibleLockedWoodenPressurePlate.getName());
-
         Block stonePlate = BlockPressurePlate.getBlockFromName("stone_pressure_plate");
         Block woodenPlate = BlockPressurePlate.getBlockFromName("wooden_pressure_plate");
 
-        GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), new Object[]{ stonePlate, Items.REDSTONE });
-        GameRegistry.addShapelessRecipe(new ItemStack(lockedWoodenPressurePlate), new Object[]{ woodenPlate, Items.REDSTONE });
+        GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), stonePlate, Items.REDSTONE);
+        GameRegistry.addShapelessRecipe(new ItemStack(lockedWoodenPressurePlate), woodenPlate, Items.REDSTONE);
 
-        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedStonePressurePlate), new Object[]{ stonePlate, Items.REDSTONE, Blocks.GLASS_PANE });
-        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedWoodenPressurePlate), new Object[]{ woodenPlate, Items.REDSTONE, Blocks.GLASS_PANE });
+        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedStonePressurePlate), stonePlate, Items.REDSTONE, Blocks.GLASS_PANE);
+        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedWoodenPressurePlate), woodenPlate, Items.REDSTONE, Blocks.GLASS_PANE);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 

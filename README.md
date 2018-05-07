@@ -35,3 +35,6 @@ This block can be crafted by combining a normal stone/wooden Pressure Plate with
 1.2.0
 - Update to Minecraft 1.8.9
 - Add Invisible Locked Pressure Plates
+
+1.3.0
+- Update to Minecraft 1.10.2
