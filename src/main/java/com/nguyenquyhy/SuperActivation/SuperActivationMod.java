@@ -55,14 +55,14 @@ public class SuperActivationMod {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        Block stonePlate = BlockPressurePlate.getBlockFromName("stone_pressure_plate");
-        Block woodenPlate = BlockPressurePlate.getBlockFromName("wooden_pressure_plate");
-
-        GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), stonePlate, Items.REDSTONE);
-        GameRegistry.addShapelessRecipe(new ItemStack(lockedWoodenPressurePlate), woodenPlate, Items.REDSTONE);
-
-        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedStonePressurePlate), stonePlate, Items.REDSTONE, Blocks.GLASS_PANE);
-        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedWoodenPressurePlate), woodenPlate, Items.REDSTONE, Blocks.GLASS_PANE);
+//        Block stonePlate = BlockPressurePlate.getBlockFromName("stone_pressure_plate");
+//        Block woodenPlate = BlockPressurePlate.getBlockFromName("wooden_pressure_plate");
+//
+//        GameRegistry.addShapelessRecipe(new ItemStack(lockedStonePressurePlate), stonePlate, Items.REDSTONE);
+//        GameRegistry.addShapelessRecipe(new ItemStack(lockedWoodenPressurePlate), woodenPlate, Items.REDSTONE);
+//
+//        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedStonePressurePlate), stonePlate, Items.REDSTONE, Blocks.GLASS_PANE);
+//        GameRegistry.addShapelessRecipe(new ItemStack(invisibleLockedWoodenPressurePlate), woodenPlate, Items.REDSTONE, Blocks.GLASS_PANE);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 

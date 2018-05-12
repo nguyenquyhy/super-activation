@@ -46,7 +46,7 @@ public class LockActivatorMessage implements IMessage {
     public static class Handler implements IMessageHandler<LockActivatorMessage, IMessage> {
         @Override
         public IMessage onMessage(LockActivatorMessage message, MessageContext ctx) {
-            World world = ctx.getServerHandler().playerEntity.worldObj;
+            World world = ctx.getServerHandler().player.world;
             BlockPos blockPos = new BlockPos(message.x, message.y, message.z);
             LockedActivatorTileEntity tileEntity = (LockedActivatorTileEntity) world.getTileEntity(blockPos);
             if (tileEntity != null && (tileEntity.itemDelegateName == null || tileEntity.itemDelegateName.isEmpty())) {

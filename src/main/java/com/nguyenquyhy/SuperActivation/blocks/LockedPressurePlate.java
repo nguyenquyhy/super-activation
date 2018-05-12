@@ -1,6 +1,5 @@
 package com.nguyenquyhy.SuperActivation.blocks;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -8,7 +7,6 @@ import com.nguyenquyhy.SuperActivation.SuperActivationMod;
 import com.nguyenquyhy.SuperActivation.gui.GUIs;
 import com.nguyenquyhy.SuperActivation.tileentities.LockedActivatorTileEntity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -21,8 +19,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 public class LockedPressurePlate extends BlockPressurePlate implements ITileEntityProvider {
     private final String name;
@@ -51,7 +47,7 @@ public class LockedPressurePlate extends BlockPressurePlate implements ITileEnti
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (world.isRemote) {
             player.openGui(SuperActivationMod.instance, GUIs.LockedPressurePlate.ordinal(),
                     world, pos.getX(), pos.getY(), pos.getZ());

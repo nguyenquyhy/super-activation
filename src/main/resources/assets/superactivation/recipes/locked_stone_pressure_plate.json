@@ -1,0 +1,14 @@
+{
+  "result": {
+    "item": "superactivation:locked_stone_pressure_plate"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:stone_pressure_plate"
+    }
+  ]
+}
